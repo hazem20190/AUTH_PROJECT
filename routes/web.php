@@ -6,8 +6,13 @@ use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\get;
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
 Route::prefix('front')->name('front.')->group(function () {
-    Route::get('/', FrontHomeController::class)->name('index');
+    Route::get('/', FrontHomeController::class)->middleware('auth')->name('index');
     Route::view('/login', 'front.auth-login-basic');
     Route::view('/register', 'front.auth-register-basic');
     Route::view('/forgot-password', 'front.auth-forgot-password-basic');
@@ -15,9 +20,7 @@ Route::prefix('front')->name('front.')->group(function () {
 
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
