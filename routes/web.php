@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Back\BackHomeController;
 use App\Http\Controllers\FrontHomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,12 @@ Route::prefix('front')->name('front.')->group(function () {
 });
 
 
-
+Route::prefix('back')->name('back.')->group(function () {
+    Route::get('/', BackHomeController::class)->name('index');
+    Route::view('/register', 'back.auth-register-basic');
+    Route::view('/login', 'back.auth-login-basic');
+    Route::view('/forgot-password', 'back.auth-forgot-password-basic');
+});
 
 
 // Route::get('/dashboard', function () {
