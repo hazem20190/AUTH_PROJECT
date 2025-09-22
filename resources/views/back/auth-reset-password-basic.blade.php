@@ -3,7 +3,7 @@
     data-assets-path="{{ asset('back-assets') }}/" data-template="vertical-menu-template-free">
 
 @include('back.partial.authHead')
-@section('title', 'Reset Password')
+@section('title', 'Admin Reset Password')
 
 <body>
     <!-- Content -->
@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('back.partial.authLogo')
-                        <form id="formAuthentication" class="mb-3" action="{{ route('password.store') }}"
+                        <form id="formAuthentication" class="mb-3" action="{{ route('back.password.store') }}"
                             method="POST">
                             @csrf
                             <!-- Password Reset Token -->
@@ -23,7 +23,7 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email"
-                                    value="{{ old('email', $request->email) }}" placeholder="Enter your email" />
+                                    value="{{ old('email', $request->email) }}" readonly />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
