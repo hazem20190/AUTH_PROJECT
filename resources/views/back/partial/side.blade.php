@@ -59,19 +59,35 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
+        <li class="menu-item @yield('active-dashboard')">
             <a href="{{ route('back.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
         <!-- USERS -->
-        <li class="menu-item active">
+        <li class="menu-item @yield('active-users')">
             <a href="{{ route('back.users.index') }}" class="menu-link">
                 <i class='bx  bxs-user'></i>
                 <div data-i18n="Analytics">Users</div>
             </a>
         </li>
+        @if (role('super admin'))
+            <!-- ADMINS -->
+            <li class="menu-item @yield('active-admins')">
+                <a href="{{ route('back.admins.index') }}" class="menu-link">
+                    <i class='bx  bxs-user'></i>
+                    <div data-i18n="Analytics">Admins</div>
+                </a>
+            </li>
+            <!-- ROLES -->
+            <li class="menu-item @yield('active-roles')">
+                <a href="{{ route('back.roles.index') }}" class="menu-link">
+                    <i class='bx  bxs-user'></i>
+                    <div data-i18n="Analytics">Roles</div>
+                </a>
+            </li>
+        @endif
 
         <!-- Layouts -->
         <li class="menu-item">

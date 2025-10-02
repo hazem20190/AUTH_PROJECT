@@ -1,21 +1,21 @@
 @extends('back.master')
-@section('title', 'Users')
+@section('title', 'Admins')
+@section('active-admins', 'active')
 @section('content')
     <!-- Basic Bootstrap Table -->
-    <div class="card">
-
+    <div class="card mt-3">
         <!-- Default Modal -->
-
-        <h5 class="card-header">Users Table</h5>
+        <h5 class="card-header">Admins Table</h5>
         <div class="table-responsive text-nowrap">
-            <div class="col-lg-4 col-md-6">
-                <!-- Button ADD modal -->
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-                    <i class="bx bx-plus"></i>Add User
-                </button>
-                @include('back.users.create')
-            </div>
-
+            @if (permission('Add_User'))
+                <div class="col-lg-4 col-md-6">
+                    <!-- Button ADD modal -->
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                        <i class="bx bx-plus"></i>Add Admin
+                    </button>
+                    @include('back.admins.create')
+                </div>
+            @endif
             @if (session('status'))
                 <div class="alert alert-success alert-dismissible" role="alert">
                     {{ session('status') }}
@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            @if ($users->isEmpty())
+            @if ($admins->isEmpty())
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     No Data Found
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -45,40 +45,54 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Role</th>
                             <th>Status</th>
-                            <th width=auto>Actions</th>
+                            @if (permission(['Delete_User', 'Edit_User']))
+                                <th width=auto>Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @foreach ($users as $user)
+                        @foreach ($admins as $admin)
                             <tr>
-                                <td>{{ ($users->currentpage() - 1) * $users->perpage() + $loop->iteration }}</td>
+                                <td>{{ ($admins->currentpage() - 1) * $admins->perpage() + $loop->iteration }}</td>
                                 <td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                    <strong>{{ $user->name }}</strong>
+                                    <strong>{{ $admin->name }}</strong>
                                 </td>
-                                <td>{{ $user->email }}</td>
+                                <td>{{ $admin->email }}</td>
                                 <td>
-                                    {!! $user->email_verified_at
+                                    @forelse ($admin->roles as $role)
+                                        <span class="badge bg-primary">{{ $role->name }}</span>
+                                    @empty
+                                        <span class="text-muted">No Role</span>
+                                    @endforelse
+                                </td>
+                                <td>
+                                    {!! $admin->email_verified_at
                                         ? '<span class="badge rounded-pill btn-success">Active</span>'
                                         : '<span class="badge rounded-pill btn-warning">Pending</span>' !!}
                                 </td>
                                 <td>
                                     <div class="col-lg-4 col-md-6 d-flex">
-                                        <!-- Button EDIT modal -->
-                                        <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editModal-{{ $user->id }}" title="Edit">
-                                            <i class="bx  bx-edit"></i>
-                                        </button>
-                                        <x-delete-button href="{{ route('back.users.destroy', $user->id) }}">
-                                        </x-delete-button>
-                                        @include('back.users.edit')
+                                        @if (permission('Edit_User'))
+                                            <!-- Button EDIT modal -->
+                                            <button class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal-{{ $admin->id }}" title="Edit">
+                                                <i class="bx  bx-edit"></i>
+                                            </button>
+                                            @include('back.admins.edit')
+                                        @endif
+                                        @if (permission('Delete_User'))
+                                            <x-delete-button href="{{ route('back.admins.destroy', $admin->id) }}">
+                                            </x-delete-button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{ $users->links('pagination::bootstrap-5') }}
+                {{ $admins->links('pagination::bootstrap-5') }}
             @endif
         </div>
     </div>

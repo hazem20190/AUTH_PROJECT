@@ -1,5 +1,6 @@
 @extends('back.master')
 @section('title', 'back Home')
+@section('active-dashboard', 'active')
 @section('content')
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -198,7 +199,7 @@
                         </div>
                     </div>
                     <!-- </div>
-                    <div class="row"> -->
+                        <div class="row"> -->
                     <div class="col-12 mb-4">
                         <div class="card">
                             <div class="card-body">

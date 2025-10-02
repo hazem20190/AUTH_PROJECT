@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\back\AdminHomeController;
-use App\Http\Controllers\Back\BackHomeController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\back\RoleController;
 use App\Http\Controllers\back\UserController;
 use App\Http\Controllers\FrontHomeController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Back\BackHomeController;
+use App\Http\Controllers\back\AdminHomeController;
 
 
 Route::get('/', function () {
@@ -16,10 +17,18 @@ Route::prefix('front')->name('front.')->group(function () {
 });
 
 Route::prefix('back')->name('back.')->group(function () {
-    Route::get('/', BackHomeController::class)->middleware('admin')->name('index');
-    Route::resource('users', UserController::class)->except(['create', 'edit', 'show']);
-    Route::resource('admins', AdminHomeController::class)->except(['create', 'edit', 'show']);
+    Route::middleware('admin')->group(function () {
 
+        Route::get('/', BackHomeController::class)->name('index');
+
+        Route::resource('users', UserController::class)->except(['create', 'edit', 'show']);
+
+        Route::resource('admins', AdminHomeController::class)
+            ->middleware('role:super admin,admin')->except(['create', 'edit', 'show']);
+
+        Route::resource('roles', RoleController::class)
+            ->middleware('role:super admin,admin')->except(['create', 'edit', 'show']);
+    });
     require __DIR__ . '/adminAuth.php';
 });
 

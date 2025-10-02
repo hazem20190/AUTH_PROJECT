@@ -28,7 +28,10 @@ class Admin extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'email_verified_at',
     ];
+
+    protected $guard_name = 'admin';
 
     /**
      * The attributes that should be hidden for serialization.

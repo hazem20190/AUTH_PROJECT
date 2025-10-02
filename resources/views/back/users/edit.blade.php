@@ -1,4 +1,4 @@
-<div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade text-start" id="editModal-{{ $user->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{ route('back.users.update', $user->id) }}" method="post">

@@ -1,11 +1,11 @@
-<div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade text-start" id="editModal-{{ $admin->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ route('back.users.update', $user->id) }}" method="post">
+            <form action="{{ route('back.admins.update', $admin->id) }}" method="post">
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel1">Edit User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel1">Edit admin</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -13,7 +13,7 @@
                         <div class="col mb-3">
                             <label for="nameBasic" class="form-label">Name</label>
                             <input type="text" id="nameBasic" name="name" class="form-control"
-                                placeholder="Enter Name" value="{{ $user->name }}" />
+                                placeholder="Enter Name" value="{{ $admin->name }}" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                     </div>
@@ -21,11 +21,25 @@
                         <div class="col mb-3">
                             <label for="emailBasic" class="form-label">Email</label>
                             <input type="email" id="emailBasic" name="email" class="form-control"
-                                placeholder="xxxx@xxx.xx" value="{{ $user->email }}" />
+                                placeholder="xxxx@xxx.xx" value="{{ $admin->email }}" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="add-role-Select" class="form-label">Check Role</label>
+                            <select id="add-role-Select" class="form-select" name="role">
+                                <option value="">No Role</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}"
+                                        {{ $admin->hasRole($role->name) ? 'selected' : '' }}>
+                                        {{ $role->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+                        </div>
+                    </div>
                     <div class="row g-2">
                         <div class="col mb-0">
                             <label for="password" class="form-label">New Password</label>
@@ -49,16 +63,16 @@
                             <div class="d-flex gap-3 mt-2">
                                 <div class="form-check">
                                     <input name="status" class="form-check-input" type="radio" value="1"
-                                        id="defaultRadio1-{{ $user->id }}"
-                                        {{ $user->email_verified_at ? 'checked' : '' }}>
+                                        id="defaultRadio1-{{ $admin->id }}"
+                                        {{ $admin->email_verified_at ? 'checked' : '' }}>
                                     <label class="form-check-label"
-                                        for="defaultRadio1-{{ $user->id }}">Active</label>
+                                        for="defaultRadio1-{{ $admin->id }}">Active</label>
                                 </div>
                                 <div class="form-check">
                                     <input name="status" class="form-check-input" type="radio" value="0"
-                                        id="defaultRadio2-{{ $user->id }}"
-                                        {{ !$user->email_verified_at ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="defaultRadio2-{{ $user->id }}">Not
+                                        id="defaultRadio2-{{ $admin->id }}"
+                                        {{ !$admin->email_verified_at ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="defaultRadio2-{{ $admin->id }}">Not
                                         active</label>
                                 </div>
                             </div>

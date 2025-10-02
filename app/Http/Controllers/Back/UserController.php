@@ -1,16 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\back;
+namespace App\Http\Controllers\Back;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\BackStoreUserRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            // new Middleware('permission:Add_User,admin', only: ['store']),
+            new Middleware('permission:Edit_User,admin', only: ['update']),
+            new Middleware('permission:Delete_User,admin', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,6 +47,8 @@ class UserController extends Controller
      */
     public function store(BackStoreUserRequest $request)
     {
+        Gate::forUser(Auth::guard('admin')->user())->authorize('create');
+
         $data = $request->validated();
         $data['email_verified_at'] = $request->input('status') == 1 ? now() : null;
         $data['password'] = Hash::make($data['password']);

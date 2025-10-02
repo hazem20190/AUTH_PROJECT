@@ -1,10 +1,10 @@
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ route('back.users.store') }}" method="post">
+            <form action="{{ route('back.admins.store') }}" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel1">Add New User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel1">Add New admin</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -24,7 +24,18 @@
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="add-role-Select" class="form-label">Check Role</label>
+                            <select id="add-role-Select" class="form-select" name="role">
+                                <option value="">No Role</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+                        </div>
+                    </div>
                     <div class="row g-2">
                         <div class="col mb-0">
                             <label for="password" class="form-label">Password</label>
