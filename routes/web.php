@@ -16,6 +16,8 @@ Route::prefix('front')->name('front.')->group(function () {
     Route::get('/', FrontHomeController::class)->middleware('auth')->name('index');
 });
 
+require __DIR__ . '/auth.php';
+
 Route::prefix('back')->name('back.')->group(function () {
     Route::middleware('admin')->group(function () {
 
@@ -32,4 +34,7 @@ Route::prefix('back')->name('back.')->group(function () {
     require __DIR__ . '/adminAuth.php';
 });
 
-require __DIR__ . '/auth.php';
+// Route::domain('admin.AUTH_ROJECT.test')->group(function () {
+//     Route::get('/', fn() => 'welcom to domain page');
+// });   //C:\Windows\System32\drivers\etc\hosts     =>   127.0.0.1   admin.AUTH_ROJECT.test
+
